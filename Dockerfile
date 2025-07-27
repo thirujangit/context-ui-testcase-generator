@@ -1,18 +1,24 @@
-# Use official Python base image
 FROM python:3.10-slim
+
+# Install required Linux packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
-# Copy all project files
+# Copy only requirements first for caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# Copy app code
 COPY . .
 
-# Install dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-# Expose the port your app runs on
-EXPOSE 10000
+# Expose the dynamic port
+ENV PORT=10000
 
 # Start the app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD ["python", "main.py"]

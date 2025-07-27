@@ -1,9 +1,8 @@
 fastapi
 uvicorn
-python-dotenv
-sentence-transformers
-faiss-cpu
-requests
 python-docx
 PyPDF2
-jinja2
+requests
+faiss-cpu
+sentence-transformers==2.2.2
+torch==2.0.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
