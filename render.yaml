@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: context-ui-generator
+    env: python
+    buildCommand: ""
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    plan: free
+    envVars:
+      - key: TOGETHER_API_KEY
+        value: your_actual_api_key_here
