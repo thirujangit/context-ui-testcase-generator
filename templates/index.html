@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Context Aware Test Case Generator 🚀</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f8fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #1a202c;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            color: #155724;
+        }
+
+        .error {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+        }
+
+        .user-story-box {
+            background: #eef6ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+            background-color: #007bff;
+            animation: progress-animation 2s infinite;
+        }
+
+        @keyframes progress-animation {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Context Aware Test Case Generator 🚀</h1>
+
+    <!-- Upload Section -->
+    <div class="section">
+        <h2>📁 Upload Documents</h2>
+        <form action="/upload-docs" enctype="multipart/form-data" method="post">
+            <label>Enter Project Name:</label>
+            <input type="text" name="project" placeholder="e.g., billing" required>
+
+            <label>Select Files (PDF/DOCX):</label>
+            <input type="file" name="files" multiple required>
+
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    <!-- Generate Section -->
+    <div class="section" style="margin-top: 40px;">
+        <h2>🧪 Generate Test Cases</h2>
+        <form id="generateForm" action="/generate" method="post" onsubmit="showLoading()">
+            <label>Select Project Name:</label>
+            <select id="project" name="project" required>
+                <option value="" disabled selected>Select a project</option>
+                {% for p in project_names %}
+                    <option value="{{ p }}">{{ p }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Enter User Story:</label>
+            <textarea id="user_story" name="user_story" rows="6" placeholder="Enter your user story here..." required></textarea>
+
+            <button type="submit">Generate</button>
+        </form>
+
+        <!-- Progress Indicator -->
+        <div id="loading" style="display:none; margin-top: 20px;">
+            <strong>Generating test cases...</strong>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Output Section -->
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if story %}
+        <h3>Your Submitted User Story:</h3>
+        <div class="user-story-box">
+            {{ story }}
+        </div>
+    {% endif %}
+
+    {% if testcases %}
+        <h2>✅ Generated Test Cases</h2>
+        <pre>{{ testcases }}</pre>
+    {% endif %}
+</div>
+
+<script>
+    function showLoading() {
+        document.getElementById("loading").style.display = "block";
+    }
+</script>
+</body>
+</html>
