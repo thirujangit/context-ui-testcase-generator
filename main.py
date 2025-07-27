@@ -187,3 +187,7 @@ async def generate_ui(request: Request, user_story: str = Form(...), project: st
         "testcases": result,
         "project_names": projects
     })
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 10000))  # Use 10000 as fallback for local
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
